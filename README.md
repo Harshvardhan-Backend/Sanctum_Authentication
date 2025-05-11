@@ -50,7 +50,7 @@ php artisan migrate
 
 1. Start the server
 ```bash
-php artisan migrate
+php artisan serve
 ```
 2. Add an header with key `Accept` and value as `application/json`
 
