@@ -41,7 +41,7 @@ php artisan migrate
 | POST   | `/api/logout`      | Logs out the user and revokes token       |  Yes      
 | POST   | `/api/posts`       |Creates new Post     |Yes             |
 | GET    | `/api/posts`  | Lists all posts                      |  Yes                   |
-| POST   | `/api/register`  | Creates a new user                   | Yes
+| POST   | `/api/register`  | Creates a new user                   | No
 | GET   | `/api/posts/{post}` | Get a specific post         |  Yes                   |
 | PUT   | `/api/posts/{post}` | Updates a specific post         |  Yes                   |
 | DELETE | `/api/posts/{post}` | Deletes a specific post         |  Yes  
