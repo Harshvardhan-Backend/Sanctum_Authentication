@@ -41,7 +41,7 @@ php artisan migrate
 | POST   | `/api/logout`      | Logs out the user and revokes token       |  Yes      
 | POST   | `/api/posts`       |Creates new Post     |Yes             |
 | GET    | `/api/posts`  | Lists all posts                      |  Yes                   |
-| POST   | `/api/register`  | Creates a new user                   | No
+| POST   | `/api/register`  | Creates a new user                   | Yes
 | GET   | `/api/posts/{post}` | Get a specific post         |  Yes                   |
 | PUT   | `/api/posts/{post}` | Updates a specific post         |  Yes                   |
 | DELETE | `/api/posts/{post}` | Deletes a specific post         |  Yes  
@@ -82,6 +82,13 @@ php artisan serve
 - Under the Authorizaation tab, select `Bearer Token`as auth type and put the copied token in the dialog box.
 
 7. Create posts using the specific api routes listed above using proper authentication token.
+- Required fields for a post:
+```json
+{
+    "title" : "Post for John",
+    "body" : "Body for John"
+}
+```
 
 8. Logout:
 
