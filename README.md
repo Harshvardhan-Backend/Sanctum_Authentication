@@ -1,61 +1,82 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Sanctum Authentication
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+##  Objective
+Secure API endpoints using token-based authentication with Laravel Sanctum.
 
-## About Laravel
+## Approach Used
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+1. **Installed Laravel Sanctum**:
+   - Added Sanctum to the project via Composer.
+   -  Created the `api.php` file using composer install and ran the required database migrations to create the `personal_access_tokens` table.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+2. **Configured Middleware**:
+   - Updated the `api` middleware group to include Sanctum’s stateful middleware for proper token handling.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+3. **Built Authentication Endpoints**:
+   - Created a custom `AuthController` to handle login and logout functionality.
+   - On login, the controller validates credentials and issues a personal access token.
+   - On logout, it revokes the current token using Laravel’s built-in methods.
 
-## Learning Laravel
+4. **Protected API Routes**:
+   - Grouped relevant routes (e.g., property-related endpoints) under the `auth:sanctum` middleware to restrict access to authenticated users only.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+5. **Tested with Postman**:
+   - Used Postman to verify login, logout, token usage, and access to protected routes.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+##  Setup Instructions
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. **Install Sanctum:**
+   ```bash
+   composer require laravel/sanctum
+    ```
+2. Run Migrations
+```bash
+php artisan migrate
+```
+## Authentication API Endpoints
 
-## Laravel Sponsors
+| Method | Endpoint           | Description                               | Authentication Required |
+|--------|--------------------|-------------------------------------------|--------------------------|
+| POST   | `/api/login`       | Logs in a user and returns a token        |  No                    |
+| POST   | `/api/logout`      | Logs out the user and revokes token       |  Yes      
+| POST   | `/api/posts`       |Creates new Post     |Yes             |
+| GET    | `/api/posts`  | Lists all posts                      |  Yes                   |
+| POST   | `/api/register`  | Creates a new user                   | Yes
+| GET   | `/api/posts/{post}` | Get a specific post         |  Yes                   |
+| PUT   | `/api/posts/{post}` | Updates a specific post         |  Yes                   |
+| DELETE | `/api/posts/{post}` | Deletes a specific post         |  Yes  
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Testing Using Postman
 
-### Premium Partners
+1. Start the server
+```bash
+php artisan migrate
+```
+2. Add an header with key `Accept` and value as `application/json`
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+3. Login:
 
-## Contributing
+- Send a POST request to /api/login with JSON body:
+```json
+{
+  "email": "user@example.com",
+  "password": "your_password"
+}
+```
+4. Receive Token:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- The response will include a token. Copy it.
 
-## Code of Conduct
+5. Access Protected Routes:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Under the Authorizaation tab, select `Bearer Token`as auth type and put the copied token in the dialog box.
 
-## Security Vulnerabilities
+6. Logout:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Send a POST request to /api/logout with the same Bearer token.
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+##  Conclusion
+
+This implementation demonstrates a secure and practical approach to API authentication using Laravel Sanctum. It ensures that sensitive endpoints are protected and accessible only to authenticated users, providing a solid foundation for building secure Laravel applications.
